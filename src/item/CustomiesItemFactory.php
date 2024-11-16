@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace customiesdevs\customies\item;
 
 use InvalidArgumentException;
+use minijaham\RPG\gear\components\GearInfo;
 use pocketmine\block\Block;
 use pocketmine\data\bedrock\item\BlockItemIdMap;
 use pocketmine\data\bedrock\item\SavedItemData;
@@ -66,13 +67,19 @@ final class CustomiesItemFactory {
 	 * item components if present.
 	 * @phpstan-param class-string $className
 	 */
-	public function registerItem(string $className, string $identifier, string $name): void {
+	public function registerItem(string $className, string $identifier, string $name, ?GearInfo $gearInfo = null): void {
 		if($className !== Item::class) {
 			Utils::testValidInstance($className, Item::class);
 		}
 
 		$itemId = ItemTypeIds::newId();
-		$item = new $className(new ItemIdentifier($itemId), $name);
+
+		if ($gearInfo === null) {
+			$item = new $className(new ItemIdentifier($itemId), $name);
+		} else {
+			$item = new $className(new ItemIdentifier($itemId), $name, $gearInfo); // if the item has gearInfo field attached.
+		}
+		
 		$this->registerCustomItemMapping($identifier, $itemId);
 
 		GlobalItemDataHandlers::getDeserializer()->map($identifier, fn() => clone $item);
