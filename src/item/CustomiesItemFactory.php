@@ -78,7 +78,11 @@ final class CustomiesItemFactory {
 		} else {
 			$item = new $className(new ItemIdentifier($itemId), $name, $gearInfo); // if the item has gearInfo field attached.
 		}
-		
+		$this->registerCustomItemMapping($identifier, $itemId);
+
+		GlobalItemDataHandlers::getDeserializer()->map($identifier, fn() => clone $item);
+		GlobalItemDataHandlers::getSerializer()->map($item, fn() => new SavedItemData($identifier));
+
 		StringToItemParser::getInstance()->register($identifier, fn() => clone $item);
 
 		if(($componentBased = $item instanceof ItemComponents)) {
