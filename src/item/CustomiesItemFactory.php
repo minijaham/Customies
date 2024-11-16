@@ -73,13 +73,19 @@ final class CustomiesItemFactory {
 		}
 
 		$itemId = ItemTypeIds::newId();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3de7adeda0cd784e97bea8b08f77c6c196e6b42e
 		if ($gearInfo === null) {
 			$item = new $className(new ItemIdentifier($itemId), $name);
 		} else {
 			$item = new $className(new ItemIdentifier($itemId), $name, $gearInfo); // if the item has gearInfo field attached.
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 3de7adeda0cd784e97bea8b08f77c6c196e6b42e
 		$this->registerCustomItemMapping($identifier, $itemId);
 
 		GlobalItemDataHandlers::getDeserializer()->map($identifier, fn() => clone $item);
